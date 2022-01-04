@@ -17,7 +17,13 @@
 }
 
 .active {
-  background-color: gray;
+  background-color: #afafaf;
+}
+
+.animating-image {
+  position: absolute;
+  height: 5rem;
+  display: none;
 }
 
 .span-all {

@@ -14,7 +14,7 @@ export default function GameOptions() {
   };
 
   return (
-    <div>
+    <div style={{ margin: 'auto' }}>
       <p>Select who is playing:</p>
       <div>
         <input
