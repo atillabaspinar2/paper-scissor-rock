@@ -31,6 +31,6 @@ export function findWinner(humanSelection: string | null, computerSelection: str
     winnerKey = itemTypeArray[max].key;
     loserKey = itemTypeArray[min].key;
   }
-  const text = winnerKey === humanSelection ? 'Human wins' : 'Computer wins';
+  const text = winnerKey === humanSelection ? 'User1 wins' : 'User2 wins';
   return `${text} with ${winnerKey} against ${loserKey}`;
 }

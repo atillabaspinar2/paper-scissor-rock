@@ -3,8 +3,9 @@ import { itemTypeArray } from '../../util/item-types';
 
 type Props = {
   computerSelection: string | null;
+  gridCol: string;
 };
-export default function ComputerSelection({ computerSelection }: Props) {
+export default function ComputerSelection({ gridCol, computerSelection }: Props) {
   const animatedStyle = (animatedItem: string) => {
     const style = {
       height: '5rem',
@@ -17,7 +18,7 @@ export default function ComputerSelection({ computerSelection }: Props) {
   return (
     <div
       style={{
-        gridColumn: `3`,
+        gridColumn: gridCol,
         overflow: 'hidden',
         height: '5rem',
       }}

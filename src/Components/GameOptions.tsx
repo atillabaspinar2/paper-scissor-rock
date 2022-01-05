@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { GameMode } from '../App';
 
-enum GameOption {
-  'COMPUTER_HUMAN' = 'COMPUTER_HUMAN',
-  'COMPUTER_COMPUTER' = 'COMPUTER_COMPUTER',
-}
+type Props = {
+  gameOption: GameMode;
+  onGameModeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-export default function GameOptions() {
-  const [gameOption, setGameOption] = useState(GameOption.COMPUTER_HUMAN);
-  const gameOptionChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const x = event.target.value as GameOption;
-    console.log(x);
-    setGameOption(x);
-  };
-
+export default function GameOptions(props: Props) {
   return (
     <div style={{ margin: 'auto' }}>
       <p>Select who is playing:</p>
@@ -21,9 +15,9 @@ export default function GameOptions() {
           type="radio"
           id="ch"
           name="game-option"
-          value={GameOption.COMPUTER_HUMAN}
-          checked={gameOption === GameOption.COMPUTER_HUMAN}
-          onChange={gameOptionChangeHandler}
+          value={GameMode.COMPUTER_HUMAN}
+          checked={props.gameOption === GameMode.COMPUTER_HUMAN}
+          onChange={props.onGameModeChange}
         />
         <label htmlFor="ch">Computer vs Human</label>
       </div>
@@ -33,9 +27,9 @@ export default function GameOptions() {
           type="radio"
           id="cc"
           name="game-option"
-          value={GameOption.COMPUTER_COMPUTER}
-          checked={gameOption === GameOption.COMPUTER_COMPUTER}
-          onChange={gameOptionChangeHandler}
+          value={GameMode.COMPUTER_COMPUTER}
+          checked={props.gameOption === GameMode.COMPUTER_COMPUTER}
+          onChange={props.onGameModeChange}
         />
         <label htmlFor="cc">Computer vs Computer</label>
       </div>
