@@ -1,6 +1,6 @@
 // order of this array is important,
 // assumption: preceding item wins, succeeding item lose.
-export const itemTypeArray = [
+export const itemTypeArray: { key: string; imgPath: string }[] = [
   {
     key: 'SCISSOR',
     imgPath: process.env.PUBLIC_URL + '/scissor.svg',
