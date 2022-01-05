@@ -1,6 +1,7 @@
 // order of this array is important,
 // assumption: preceding item wins, succeeding item lose.
-export const itemTypeArray: { key: string; imgPath: string }[] = [
+export type Items = { key: string; imgPath?: string }[];
+export const itemTypeArray: Items = [
   {
     key: 'SCISSOR',
     imgPath: process.env.PUBLIC_URL + '/scissor.svg',
@@ -15,22 +16,22 @@ export const itemTypeArray: { key: string; imgPath: string }[] = [
   },
 ];
 
-export function findWinner(humanSelection: string | null, computerSelection: string | null) {
-  const item1 = itemTypeArray.findIndex((i) => i.key === humanSelection);
-  const item2 = itemTypeArray.findIndex((i) => i.key === computerSelection);
+export function findWinner(user1Selection: string | null, user2Selection: string | null, items: Items = itemTypeArray) {
+  const item1 = items.findIndex((i) => i.key === user1Selection);
+  const item2 = items.findIndex((i) => i.key === user2Selection);
   if (item1 === item2) {
     return 'Tie';
   }
   const [min, max] = item1 <= item2 ? [item1, item2] : [item2, item1];
   let winnerKey = '';
   let loserKey = '';
-  if (max - min < itemTypeArray.length / 2) {
-    winnerKey = itemTypeArray[min].key;
-    loserKey = itemTypeArray[max].key;
+  if (max - min < items.length / 2) {
+    winnerKey = items[min].key;
+    loserKey = items[max].key;
   } else {
-    winnerKey = itemTypeArray[max].key;
-    loserKey = itemTypeArray[min].key;
+    winnerKey = items[max].key;
+    loserKey = items[min].key;
   }
-  const text = winnerKey === humanSelection ? 'User1 wins' : 'User2 wins';
+  const text = winnerKey === user1Selection ? 'User1 wins' : 'User2 wins';
   return `${text} with ${winnerKey} against ${loserKey}`;
 }
