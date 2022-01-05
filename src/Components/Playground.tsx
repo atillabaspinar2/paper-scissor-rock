@@ -1,8 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { itemTypeArray } from '../util/item-types';
+import PlaceholderImage from './PlaceholderImage';
 
 import classes from './Playground.module.scss';
+import Result from './Result';
 import Button from './UI/Button';
+import ComputerSelection from './UI/ComputerSelection';
+import UserOptions from './UI/UserOptions';
 
 export default function Playground() {
   const [humanSelection, setHumanSelection] = useState<string | null>(null);
@@ -15,10 +19,6 @@ export default function Playground() {
     setComputerSelection(null);
     setWinner(null);
     setHumanSelection(item);
-  };
-
-  const activeItem = (key: string) => {
-    return key === humanSelection ? classes.active : '';
   };
 
   const selectedImage = () => {
@@ -65,27 +65,9 @@ export default function Playground() {
     }, 2000);
   }, [humanSelection]);
 
-  const animatedStyle = (animatedItem: string) => {
-    const style = {
-      height: '5rem',
-    };
-    const display = computerSelection === animatedItem ? 'block' : 'none';
-
-    return { ...style, display };
-  };
-
   return (
     <div className={classes.playground}>
-      <div className={classes.items} style={{ gridColumn: '1 / -1', justifySelf: 'center' }}>
-        {itemTypeArray.map((item) => (
-          <img
-            key={item.key}
-            className={activeItem(item.key)}
-            onClick={() => itemSelectHandler(item.key)}
-            src={item.imgPath}
-          />
-        ))}
-      </div>
+      <UserOptions humanSelection={humanSelection} itemSelectHandler={itemSelectHandler} />
 
       <div style={{ gridColumn: `1 / span 1`, justifySelf: 'center' }}>Human</div>
       <div style={{ gridColumn: `3 / span 1`, justifySelf: 'center' }}>Computer</div>
@@ -98,6 +80,7 @@ export default function Playground() {
           src={process.env.PUBLIC_URL + '/question-mark.svg'}
         />
       )}
+
       <Button
         style={{ gridColumn: `2`, justifySelf: 'center' }}
         onClick={playHandler}
@@ -106,61 +89,11 @@ export default function Playground() {
         PLAY
       </Button>
 
-      {/* placeholder image */}
-      {!thinking && !computerSelection && (
-        <img
-          style={{ gridColumn: `3`, justifySelf: 'center', height: '5rem' }}
-          src={process.env.PUBLIC_URL + '/question-mark.svg'}
-        />
-      )}
+      {!thinking && !computerSelection && <PlaceholderImage />}
 
-      {
-        <div
-          style={{
-            gridColumn: `3`,
-            overflow: 'hidden',
-            height: '5rem',
-          }}
-        >
-          <div
-            style={{
-              justifySelf: 'center',
-              display: 'flex',
-              flexDirection: 'column',
+      <ComputerSelection computerSelection={computerSelection} />
 
-              position: 'relative',
-              transition: 'all 0.2s ease 0s',
-            }}
-          >
-            {itemTypeArray.map((item) => (
-              <img key={item.key} style={animatedStyle(item.key)} src={item.imgPath} />
-            ))}
-          </div>
-        </div>
-      }
-      {!thinking && winner && (
-        <div
-          style={{
-            gridColumn: `1 / span 3`,
-            justifySelf: 'center',
-            textAlign: 'center',
-            fontSize: '2rem',
-            backgroundColor: 'darkred',
-            borderRadius: '0.5rem',
-            color: 'white',
-            margin: '0 0.5rem',
-            padding: '0 0.5rem',
-            fontWeight: 'bold',
-          }}
-        >
-          <span style={{}}>{winner}</span>
-        </div>
-      )}
-      {thinking && (
-        <div style={{ gridColumn: `1 / span 3`, justifySelf: 'center', fontSize: '2rem', textAlign: 'center' }}>
-          Wait a moment please for the result...
-        </div>
-      )}
+      <Result thinking={thinking} winner={winner} />
     </div>
   );
 }
