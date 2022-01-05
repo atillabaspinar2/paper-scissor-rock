@@ -95,12 +95,12 @@ export default function Playground({ gameMode }: { gameMode: GameMode }) {
     <div className={classes.playground}>
       {isHuman() && <UserOptions humanSelection={user1Selection} itemSelectHandler={itemSelectHandler} />}
 
-      <div style={{ gridColumn: `1 / span 1`, justifySelf: 'center' }}>{isHuman() ? 'Human' : 'Computer'}</div>
+      <div style={{ gridColumn: `1`, justifySelf: 'center' }}>{isHuman() ? 'Human' : 'Computer'}</div>
 
-      <div style={{ gridColumn: `3 / span 1`, justifySelf: 'center' }}>Computer</div>
+      <div style={{ gridColumn: `3`, justifySelf: 'center' }}>Computer</div>
 
       {user1Selection && isHuman() && (
-        <img style={{ gridColumn: `1 / span 1`, justifySelf: 'center', height: '5rem' }} src={selectedImage()} />
+        <img style={{ gridColumn: `1`, justifySelf: 'center', height: '5rem' }} src={selectedImage()} />
       )}
 
       {!isHuman() && (thinking || user1Selection) && (

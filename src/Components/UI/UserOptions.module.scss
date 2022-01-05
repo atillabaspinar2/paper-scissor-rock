@@ -1,7 +1,8 @@
 .items {
   display: flex;
   gap: 1rem;
-
+  grid-column: 1 / -1;
+  justify-self: center;
   img {
     width: 2rem;
     height: auto;

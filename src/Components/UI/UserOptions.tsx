@@ -11,7 +11,7 @@ export default function UserOptions(props: Props) {
   };
 
   return (
-    <div className={classes.items} style={{ gridColumn: '1 / -1', justifySelf: 'center' }}>
+    <div className={classes.items}>
       {itemTypeArray.map((item) => (
         <img
           key={item.key}
