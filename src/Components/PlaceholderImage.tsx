@@ -1,9 +1,11 @@
 import React from 'react';
-
-export default function PlaceholderImage() {
+type Props = {
+  gridCol: string;
+};
+export default function PlaceholderImage({ gridCol }: Props) {
   return (
     <img
-      style={{ gridColumn: `3`, justifySelf: 'center', height: '5rem' }}
+      style={{ gridColumn: gridCol, justifySelf: 'center', height: '5rem' }}
       src={process.env.PUBLIC_URL + '/question-mark.svg'}
     />
   );

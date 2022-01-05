@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { itemTypeArray } from '../util/item-types';
+import { findWinner, itemTypeArray } from '../util/item-types';
 import PlaceholderImage from './PlaceholderImage';
 
 import classes from './Playground.module.scss';
 import Result from './Result';
 import Button from './UI/Button';
 import ComputerSelection from './UI/ComputerSelection';
+import Overlay from './UI/Overlay';
 import UserOptions from './UI/UserOptions';
 
 export default function Playground() {
@@ -28,37 +29,21 @@ export default function Playground() {
   const playHandler = useCallback(() => {
     setThinking(true);
     const interval = setInterval(() => {
-      const r = Math.floor(Math.random() * 1000) % 3;
-      const key = itemTypeArray[r].key;
-      setComputerSelection(key);
-    }, 200);
-    setTimeout(() => {
-      const r = Math.floor(Math.random() * itemTypeArray.length);
-
-      console.log('selected is', r);
-      const key = itemTypeArray[r].key;
-      setComputerSelection(() => {
+      const random = Math.floor(Math.random() * 1000) % 3;
+      const key = itemTypeArray[random].key;
+      setComputerSelection((prevKey) => {
+        if (prevKey === key) {
+          // make sure to animate a different image each time
+          return itemTypeArray[(random + 1) % itemTypeArray.length].key;
+        }
         return key;
       });
-      setWinner(() => {
-        const i1 = itemTypeArray.findIndex((i) => i.key === humanSelection);
-        const i2 = itemTypeArray.findIndex((i) => i.key === key);
-        if (i1 === i2) {
-          return 'Tie';
-        }
-        const [min, max] = i1 <= i2 ? [i1, i2] : [i2, i1];
-        let winnerKey = '';
-        let loserKey = '';
-        if (max - min < itemTypeArray.length / 2) {
-          winnerKey = itemTypeArray[min].key;
-          loserKey = itemTypeArray[max].key;
-        } else {
-          winnerKey = itemTypeArray[max].key;
-          loserKey = itemTypeArray[min].key;
-        }
-        const text = winnerKey === humanSelection ? 'Human wins' : 'Computer wins';
-        return `${text} with ${winnerKey} against ${loserKey}`;
-      });
+    }, 200);
+    setTimeout(() => {
+      const random = Math.floor(Math.random() * itemTypeArray.length);
+      const key = itemTypeArray[random].key;
+      setComputerSelection(() => key);
+      setWinner(() => findWinner(humanSelection, key));
 
       setThinking(false);
       clearInterval(interval);
@@ -74,12 +59,7 @@ export default function Playground() {
       {humanSelection && (
         <img style={{ gridColumn: `1 / span 1`, justifySelf: 'center', height: '5rem' }} src={selectedImage()} />
       )}
-      {!humanSelection && (
-        <img
-          style={{ gridColumn: `1 / span 1`, justifySelf: 'center', height: '5rem' }}
-          src={process.env.PUBLIC_URL + '/question-mark.svg'}
-        />
-      )}
+      {!humanSelection && <PlaceholderImage gridCol="1" />}
 
       <Button
         style={{ gridColumn: `2`, justifySelf: 'center' }}
@@ -89,7 +69,8 @@ export default function Playground() {
         PLAY
       </Button>
 
-      {!thinking && !computerSelection && <PlaceholderImage />}
+      {!thinking && !computerSelection && <PlaceholderImage gridCol="3" />}
+      {thinking && <Overlay />}
 
       <ComputerSelection computerSelection={computerSelection} />
 
