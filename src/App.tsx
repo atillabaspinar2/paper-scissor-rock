@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classes from './App.module.scss';
 import GameOptions from './Components/GameOptions';
-import Header from './Components/Heaader';
+import Header from './Components/Header';
 import Playground from './Components/Playground';
 
 export enum GameMode {
